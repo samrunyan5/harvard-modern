@@ -10,8 +10,28 @@
     <div id='pager'></div>
     <div id='results'></div>
 <script>
-    const API_KEY= 'YOUR API KEY';
-    const BASE_URL = `https://api.harvardartmuseums.org/object?apikey=${ API_KEY}&hasimage=1&period=Modern&sort=id&size=50`;
+    const API_KEY= 'a9ee16cc-1e1b-48f0-8a30-ec656108010a';
+    const BASE_URL = `https://api.harvardartmuseums.org/object?apikey=${API_KEY}&hasimage=1&period=Modern&sort=id&size=50`; //add page here?
+
+    async function fetchData () {
+        $('#pager').empty()
+        $('#results').empty()
+        let response = await fetch(`${BASE_URL}&page=1`)
+        let data = await response.json()
+        let records = data.records
+        
+        records.forEach(record => {
+            let recordElement = $(`<div class='record'>
+                    <h3>${record.title}</h3>
+                    <p>${record.description}</p>
+                </div>`)
+
+            recordElement.data('record', record)
+            $('#results').append(recordElement)
+        })
+    }
+
+    fetchData()
 </script>
   </body>
 </html>
