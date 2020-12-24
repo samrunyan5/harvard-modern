@@ -28,16 +28,18 @@
     async function fetchData () {
         $('#pager').empty()
         $('#results').empty()
-        let response = await fetch(`${BASE_URL}&page=1`)
+        let pageNumber = window.location.hash.slice(1) || 1
+        let response = await fetch(`${BASE_URL}&page=${pageNumber}`)
         let data = await response.json()
         let pages = data.info.pages
         let records = data.records
         
         records.forEach(record => {
             let recordElement = $(`<div class='record'>
-                    <h3>${record.title}</h3>
-                    <p>${record.description}</p>
-                </div>`)
+                <br>
+                <h3>${record.title}</h3>
+                <p>${record.description}</p>
+            </div>`)
 
             $('#results').append(recordElement)
         })
@@ -50,6 +52,8 @@
             $('#pager').append(pageElement)
         }
     }
+
+    window.addEventListener('hashchange', fetchData)
 
     fetchData()
 </script>
