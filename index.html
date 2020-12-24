@@ -1,7 +1,19 @@
 <html>
   <head>
 <style>
+    body {
+        font-family: 'Arial Narrow';
+    }
 
+    #pager {
+        display: flex;
+        justify-content: space-around;
+    }
+
+    /* .pages {
+        font-size: 16px;
+        padding: 2px;
+    } */
 </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
   </head>
@@ -18,6 +30,7 @@
         $('#results').empty()
         let response = await fetch(`${BASE_URL}&page=1`)
         let data = await response.json()
+        let pages = data.info.pages
         let records = data.records
         
         records.forEach(record => {
@@ -26,9 +39,16 @@
                     <p>${record.description}</p>
                 </div>`)
 
-            recordElement.data('record', record)
             $('#results').append(recordElement)
         })
+
+        for (let i = 1; i <= pages; i++) {
+            let pageElement = $(`<div class='pages'>
+                    <a href=#${i}>${i}</a>
+                </div>`)
+
+            $('#pager').append(pageElement)
+        }
     }
 
     fetchData()
